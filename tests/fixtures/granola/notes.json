@@ -1,0 +1,18 @@
+{
+  "list_page1": { "notes": [
+    { "id": "not_aaa", "object": "note", "title": "Weekly ops", "owner": {"name": "Me", "email": "me@example.com"}, "created_at": "2026-10-01T09:00:00Z", "updated_at": "2026-10-01T10:00:00Z", "deleted_at": null },
+    { "id": "not_del", "object": "note", "title": "Deleted", "owner": {"name": "Me", "email": "me@example.com"}, "created_at": "2026-10-01T09:00:00Z", "updated_at": "2026-10-02T10:00:00Z", "deleted_at": "2026-10-02T10:00:00Z" }
+  ], "hasMore": true, "cursor": "c2" },
+  "list_page2": { "notes": [
+    { "id": "not_bbb", "object": "note", "title": "Carrier sync", "owner": {"name": "Me", "email": "me@example.com"}, "created_at": "2026-10-03T09:00:00Z", "updated_at": "2026-10-03T11:00:00Z", "deleted_at": null }
+  ], "hasMore": false, "cursor": null },
+  "note": {
+    "id": "not_aaa", "object": "note", "title": "Weekly ops", "web_url": "https://notes.granola.ai/d/aaa",
+    "owner": {"name": "Me", "email": "me@example.com"},
+    "created_at": "2026-10-01T09:00:00Z", "updated_at": "2026-10-01T10:00:00Z", "deleted_at": null,
+    "calendar_event": { "event_title": "Weekly ops", "invitees": [{"email": "ana@example.com"}, {"email": "bo@example.com"}], "organiser": "me@example.com", "calendar_event_id": "evt123", "scheduled_start_time": "2026-10-01T09:00:00Z", "scheduled_end_time": "2026-10-01T09:30:00Z" },
+    "attendees": [{"name": "Ana", "email": "ana@example.com"}],
+    "folder_membership": [], "space_membership": [], "transcript": null,
+    "summary_text": "Summary", "summary_markdown": "### Summary\n- point", "private_notes_text": "follow up with Bo", "private_notes_markdown": "follow up with Bo"
+  }
+}

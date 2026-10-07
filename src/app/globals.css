@@ -1,0 +1,15 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --color-ink: #16171a;
+  --color-muted: #6b6f76;
+  --color-faint: #9b9fa6;
+  --color-line: #ececef;
+  --color-soft: #f7f7f8;
+  --color-accent: #5e6ad2;
+}
+
+:root { color-scheme: light; }
+html, body { background: #ffffff; color: var(--color-ink); }
+body { font-feature-settings: "cv11", "ss01"; -webkit-font-smoothing: antialiased; }

@@ -7,3 +7,8 @@ data/
 *.db-*
 tokens/
 .DS_Store
+
+# local
+*.tsbuildinfo
+next-env.d.ts
+!.env.example
