@@ -1,0 +1,19 @@
+{ "data": [
+  { "id": { "workspace_id": "00000000-0000-4000-8000-0000000000aa", "object_id": "f0fddca5-deba-42fc-8158-122da0542e8b", "record_id": "e1d9e3eb-0fbc-48cc-9fe9-7ce99df93c47" },
+    "created_at": "2026-10-07T14:45:09.123456789Z",
+    "web_url": "https://app.attio.com/opereit/company/e1d9e3eb-0fbc-48cc-9fe9-7ce99df93c47",
+    "values": {
+      "name": [{ "active_from": "2026-10-07T14:45:09.123456789Z", "active_until": null, "created_by_actor": { "type": "system", "id": null }, "value": "Harbor Logistics", "attribute_type": "text" }],
+      "domains": [{ "active_from": "2026-10-07T14:45:09.123456789Z", "active_until": null, "created_by_actor": { "type": "system", "id": null }, "domain": "harbor.example", "root_domain": "harbor.example", "attribute_type": "domain" }],
+      "description": [{ "active_from": "2026-10-07T14:46:00.000000000Z", "active_until": null, "created_by_actor": { "type": "system", "id": null }, "value": "Warehousing, distribution and reverse logistics.", "attribute_type": "text" }],
+      "customer_type": [{ "active_from": "2026-10-07T15:00:00.000000000Z", "active_until": null, "created_by_actor": { "type": "workspace-member", "id": "bb4f61c2-f3e2-4f9e-a5d9-ebd60fb5edd1" }, "option": { "id": { "workspace_id": "00000000-0000-4000-8000-0000000000aa", "object_id": "f0fddca5-deba-42fc-8158-122da0542e8b", "attribute_id": "00000000-0000-4000-8000-0000000000c1", "option_id": "00000000-0000-4000-8000-0000000000o1" }, "title": "Prospect", "is_archived": false }, "attribute_type": "select" }],
+      "associated_deals": [{ "active_from": "2026-10-07T14:45:16.000000000Z", "active_until": null, "created_by_actor": { "type": "api-token", "id": "00000000-0000-4000-8000-0000000000t1" }, "target_object": "deals", "target_record_id": "216768ad-a4e4-47d1-8dd9-8c5134f18836", "attribute_type": "record-reference" }],
+      "last_interaction": [{ "active_from": "2026-10-07T18:50:00.000000000Z", "active_until": null, "created_by_actor": { "type": "system", "id": null }, "interaction_type": "email", "interacted_at": "2026-10-07T18:50:00.000000000Z", "owner_actor": { "type": "workspace-member", "id": "bb4f61c2-f3e2-4f9e-a5d9-ebd60fb5edd1" }, "attribute_type": "interaction" }]
+    } },
+  { "id": { "workspace_id": "00000000-0000-4000-8000-0000000000aa", "object_id": "f0fddca5-deba-42fc-8158-122da0542e8b", "record_id": "9b574705-af50-4cde-936c-6adc00308f6f" },
+    "created_at": "2026-05-20T10:00:00.000000000Z",
+    "web_url": "https://app.attio.com/opereit/company/9b574705-af50-4cde-936c-6adc00308f6f",
+    "values": {
+      "name": [{ "active_from": "2026-05-20T10:00:00.000000000Z", "active_until": null, "created_by_actor": { "type": "system", "id": null }, "value": "Old Retail Co", "attribute_type": "text" }]
+    } }
+] }

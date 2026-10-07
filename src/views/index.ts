@@ -6,6 +6,7 @@ import { linearView } from "./linear";
 import { gmailView } from "./gmail";
 import { slackView } from "./slack";
 import { granolaView } from "./granola";
+import { attioView } from "./attio";
 
 export const views: Record<Source, SourceView> = {
   calendar: genericView("calendar", "Calendar"),
@@ -15,7 +16,7 @@ export const views: Record<Source, SourceView> = {
   granola: granolaView,
   sheets: sheetsView,
   notion: genericView("notion", "Notion"),
-  attio: genericView("attio", "Attio"),
+  attio: attioView,
   metabase: genericView("metabase", "Metabase"),
 };
 
