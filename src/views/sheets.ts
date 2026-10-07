@@ -3,7 +3,7 @@ import { count, rows, toView } from "./helpers";
 
 // Expects raw = { tab: "Daily prios" | "Readings", status, deadline, owner, link } (see docs/fanout.md).
 const OPEN = `json_extract(raw_json,'$.tab') = 'Daily prios' and json_extract(raw_json,'$.status') in ('Pending','WIP','Review','Blocked')`;
-const READING = `json_extract(raw_json,'$.tab') = 'Readings' and json_extract(raw_json,'$.status') != 'Done'`;
+const READING = `json_extract(raw_json,'$.tab') = 'Readings' and coalesce(json_extract(raw_json,'$.status'), '') != 'Done'`;
 
 export const sheetsView: SourceView = {
   source: "sheets",

@@ -13,6 +13,7 @@
     "sync": "tsx worker/index.ts --once",
     "worker": "tsx worker/index.ts",
     "auth:check": "tsx scripts/auth-check.ts",
+    "auth:google": "tsx scripts/auth-google.ts",
     "test": "vitest run",
     "typecheck": "tsc --noEmit"
   },

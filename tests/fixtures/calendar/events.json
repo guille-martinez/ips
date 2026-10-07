@@ -1,0 +1,174 @@
+{
+ "calendar": {
+  "kind": "calendar#calendar",
+  "id": "me@example.com",
+  "summary": "me@example.com",
+  "timeZone": "Europe/Madrid"
+ },
+ "page1": {
+  "kind": "calendar#events",
+  "summary": "me@example.com",
+  "timeZone": "Europe/Madrid",
+  "nextPageToken": "pg2",
+  "items": [
+   {
+    "kind": "calendar#event",
+    "id": "48omasscsqki1o40f9c9k4uos3_20261007T180000Z",
+    "status": "confirmed",
+    "htmlLink": "https://www.google.com/calendar/event?eid=abc",
+    "created": "2026-05-26T08:44:54Z",
+    "updated": "2026-10-07T04:23:34Z",
+    "summary": "Weekly: GM & PC",
+    "description": "<a href=\"https://docs.google.com/document/d/x\">02.05.03 GM &amp; PC</a><br>Agenda",
+    "creator": {
+     "email": "pablo@example.com"
+    },
+    "organizer": {
+     "email": "pablo@example.com"
+    },
+    "start": {
+     "dateTime": "2026-10-07T20:00:00+02:00",
+     "timeZone": "Europe/Paris"
+    },
+    "end": {
+     "dateTime": "2026-10-07T20:45:00+02:00",
+     "timeZone": "Europe/Paris"
+    },
+    "recurringEventId": "48omasscsqki1o40f9c9k4uos3",
+    "originalStartTime": {
+     "dateTime": "2026-10-07T20:00:00+02:00"
+    },
+    "attendees": [
+     {
+      "email": "me@example.com",
+      "self": true,
+      "responseStatus": "accepted"
+     },
+     {
+      "email": "pablo@example.com",
+      "organizer": true,
+      "responseStatus": "accepted"
+     },
+     {
+      "email": "c_room@resource.calendar.google.com",
+      "resource": true,
+      "responseStatus": "accepted"
+     }
+    ],
+    "eventType": "default",
+    "hangoutLink": "https://meet.google.com/xxx-yyyy-zzz"
+   },
+   {
+    "kind": "calendar#event",
+    "id": "declined1",
+    "status": "confirmed",
+    "summary": "All hands",
+    "start": {
+     "dateTime": "2026-10-08T10:00:00+02:00"
+    },
+    "end": {
+     "dateTime": "2026-10-08T11:00:00+02:00"
+    },
+    "attendees": [
+     {
+      "email": "me@example.com",
+      "self": true,
+      "responseStatus": "declined"
+     }
+    ],
+    "eventType": "default",
+    "updated": "2026-10-06T10:00:00Z"
+   },
+   {
+    "kind": "calendar#event",
+    "id": "wl1",
+    "status": "confirmed",
+    "summary": "Office",
+    "start": {
+     "date": "2026-10-08"
+    },
+    "end": {
+     "date": "2026-10-09"
+    },
+    "eventType": "workingLocation",
+    "updated": "2026-10-06T10:00:00Z"
+   }
+  ]
+ },
+ "page2": {
+  "kind": "calendar#events",
+  "nextSyncToken": "sync1",
+  "items": [
+   {
+    "kind": "calendar#event",
+    "id": "4d61imufq55mnks6vfcv32nknh",
+    "status": "confirmed",
+    "htmlLink": "https://www.google.com/calendar/event?eid=def",
+    "summary": "Hiring - Updates",
+    "creator": {
+     "email": "me@example.com",
+     "self": true
+    },
+    "organizer": {
+     "email": "me@example.com",
+     "self": true,
+     "displayName": "Me"
+    },
+    "start": {
+     "dateTime": "2026-10-08T08:30:00+02:00",
+     "timeZone": "Europe/Madrid"
+    },
+    "end": {
+     "dateTime": "2026-10-08T09:00:00+02:00",
+     "timeZone": "Europe/Madrid"
+    },
+    "eventType": "default",
+    "updated": "2026-10-07T17:19:06Z"
+   },
+   {
+    "kind": "calendar#event",
+    "id": "allday1",
+    "status": "confirmed",
+    "summary": "Holiday",
+    "start": {
+     "date": "2026-10-12"
+    },
+    "end": {
+     "date": "2026-10-13"
+    },
+    "eventType": "default",
+    "updated": "2026-10-01T00:00:00Z"
+   }
+  ]
+ },
+ "incremental": {
+  "kind": "calendar#events",
+  "nextSyncToken": "sync2",
+  "items": [
+   {
+    "kind": "calendar#event",
+    "id": "4d61imufq55mnks6vfcv32nknh",
+    "status": "cancelled"
+   },
+   {
+    "kind": "calendar#event",
+    "id": "new1",
+    "status": "tentative",
+    "summary": "Carrier call",
+    "start": {
+     "dateTime": "2026-10-09T15:00:00Z"
+    },
+    "end": {
+     "dateTime": "2026-10-09T15:30:00Z"
+    },
+    "attendees": [
+     {
+      "email": "bo@example.com",
+      "displayName": "Bo"
+     }
+    ],
+    "updated": "2026-10-07T18:00:00Z"
+   }
+  ]
+ }
+}

@@ -1,0 +1,88 @@
+{
+ "meta": {
+  "properties": {
+   "title": "Superbrain"
+  },
+  "sheets": [
+   {
+    "properties": {
+     "title": "Daily prios"
+    }
+   },
+   {
+    "properties": {
+     "title": "Readings"
+    }
+   },
+   {
+    "properties": {
+     "title": "Passwords"
+    }
+   }
+  ]
+ },
+ "Daily prios": {
+  "range": "'Daily prios'!A1:Z1000",
+  "majorDimension": "ROWS",
+  "values": [
+   [
+    "ID",
+    "Priority",
+    "Owner",
+    "Status",
+    "Deadline",
+    "Link"
+   ],
+   [
+    "T1",
+    "Refile Amphora DHL claims",
+    "Me",
+    "WIP",
+    "9/10/26",
+    "https://example.com/doc"
+   ],
+   [
+    "T2",
+    "August invoicing",
+    "Julio",
+    "Pending",
+    "31/1/2027"
+   ],
+   [],
+   [
+    "T2",
+    "Duplicate id row",
+    "Me",
+    "Done",
+    ""
+   ],
+   [
+    "",
+    "No id row",
+    "Me",
+    "Blocked",
+    "bad date"
+   ]
+  ]
+ },
+ "Readings": {
+  "range": "Readings!A1:Z1000",
+  "majorDimension": "ROWS",
+  "values": [
+   [
+    "Name",
+    "Link",
+    "Status"
+   ],
+   [
+    "Shape Up",
+    "https://basecamp.com/shapeup",
+    "Pending"
+   ],
+   [
+    "Untitled status",
+    "https://example.com/a"
+   ]
+  ]
+ }
+}
