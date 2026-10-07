@@ -1,8 +1,20 @@
 import type { SourceView } from "./types";
 import { count, rows, sinceHours, toView } from "./helpers";
 
-// Expects raw = Slack message plus { channel_type: "im" | "mpim" | "channel" | "group", channel_name }.
-const DM = `json_extract(raw_json,'$.channel_type') in ('im','mpim')`;
+// raw = Slack message plus { channel, channel_type: "im" | "mpim" | "channel" | "group", channel_name, from_me, mentions_me }.
+const j = (alias: string, path: string) => `json_extract(${alias}.raw_json,'$.${path}')`;
+const isDm = (a: string) => `${j(a, "channel_type")} in ('im','mpim')`;
+const DM = isDm("items");
+
+// Needs me: a DM/group DM or an @-mention from someone else, with no later message from me in the
+// same conversation (the whole DM, or the thread for channel mentions). One row per conversation.
+const AWAITING = `${sinceHours(48)} and ${j("items", "from_me")} = 0
+  and (${DM} or ${j("items", "mentions_me")} = 1)
+  and not exists (
+    select 1 from items m where m.source = 'slack' and m.occurred_at > items.occurred_at
+      and (case when ${DM} then ${j("m", "channel")} = ${j("items", "channel")} else m.thread_key = items.thread_key end)
+      and (${DM} or ${j("m", "from_me")} = 1)
+  )`;
 
 export const slackView: SourceView = {
   source: "slack",
@@ -11,9 +23,12 @@ export const slackView: SourceView = {
     stats: [
       { label: "DMs 24h", value: count("slack", `${DM} and ${sinceHours(24)}`) },
       { label: "msgs 24h", value: count("slack", sinceHours(24)) },
+      { label: "mentions 24h", value: count("slack", `${j("items", "mentions_me")} = 1 and ${sinceHours(24)}`) },
     ],
-    items: rows("slack", { extra: "json_extract(raw_json,'$.channel_name') ch" }).map((r) => toView(r, { badge: (r.ch as string) ?? null })),
+    items: rows("slack", { extra: `${j("items", "channel_name")} ch` }).map((r) => toView(r, { badge: (r.ch as string) ?? null })),
   }),
-  // v1 heuristic: recent DMs. Phase 2 (triage) replaces this with "awaiting my reply".
-  pending: () => rows("slack", { where: `${DM} and ${sinceHours(48)}`, limit: 10 }).map((r) => toView(r, { badge: "DM" })),
+  pending: () =>
+    rows("slack", { where: AWAITING, limit: 10, extra: `${j("items", "channel_name")} ch, ${DM} dm` }).map((r) =>
+      toView(r, { badge: r.dm ? `DM ${r.ch ?? ""}`.trim() : ((r.ch as string) ?? "mention") }),
+    ),
 };
