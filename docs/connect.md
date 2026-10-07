@@ -17,7 +17,6 @@ Every token is **read-only**. If a screen offers write scopes, leave them off.
 | Linear | Personal API key `lin_api_…` | No |
 | Notion | Internal integration token | Notion workspace owner, to create integrations |
 | Attio | Access token | Attio admin |
-| Metabase | API key | Metabase admin |
 
 ---
 
@@ -108,11 +107,8 @@ Calendar event on the Today page.
 
 ## Metabase
 
-1. Metabase → **Admin settings → Authentication → API keys → Create API key** (admin only).
-2. Name it `IPS`. For the group, ideally create a group with view-only access to the
-   collections you care about. Don't use Administrators.
-3. Copy the key to `METABASE_API_KEY`. Set `METABASE_URL` to the base URL, e.g.
-   `https://metabase.opereit.ai`.
+Out of scope for now. When it comes back: Admin settings → Authentication → API keys,
+with a view-only group; set `METABASE_URL` and `METABASE_API_KEY`.
 
 ## Keeping the worker running
 

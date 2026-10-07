@@ -16,7 +16,6 @@ export const views: Record<Source, SourceView> = {
   sheets: sheetsView,
   notion: genericView("notion", "Notion"),
   attio: genericView("attio", "Attio"),
-  metabase: genericView("metabase", "Metabase"),
 };
 
 /** Merged "needs me" list across every source. */

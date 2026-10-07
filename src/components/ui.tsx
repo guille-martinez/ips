@@ -13,7 +13,6 @@ export const SOURCE_META: Record<Source, { label: string; color: string; glyph: 
   linear: { label: "Linear", color: "#5e6ad2", glyph: "L" },
   notion: { label: "Notion", color: "#191919", glyph: "N" },
   attio: { label: "Attio", color: "#2d2f36", glyph: "A" },
-  metabase: { label: "Metabase", color: "#509ee3", glyph: "M" },
   sheets: { label: "Superbrain", color: "#188038", glyph: "B" },
 };
 

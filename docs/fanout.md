@@ -22,7 +22,6 @@ Each agent owns **two** things for its source:
 | linear | `src/connectors/linear.ts`, `src/views/linear.ts`, tests and fixtures |
 | notion | `src/connectors/notion.ts`, `src/views/notion.ts` (new, register in `src/views/index.ts`), tests and fixtures |
 | attio | `src/connectors/attio.ts`, `src/views/attio.ts` (new, register in `src/views/index.ts`), tests and fixtures |
-| metabase | `src/connectors/metabase.ts`, `src/views/metabase.ts` (new, register in `src/views/index.ts`), tests and fixtures |
 
 Agents should only touch their own files (registering a view in `src/views/index.ts` is a
 one-line change and fine). The shared files (`schema.ts`, `run.ts`,
@@ -94,6 +93,5 @@ fetch, its choice) and an npm script (`auth:google`).
 - **attio**: kind `record`. Companies and deals (plus people if cheap):
   `POST /v2/objects/{obj}/records/query` (allow-list it), sorted by updated time. Include
   notes if the scope allows.
-- **metabase**: kind `dashboard`. `GET /api/dashboard` and `GET /api/card`; there's no
-  updated_since filter, so take a full snapshot and compare `updated_at`. Optional
-  read-only runs of saved questions come later. Don't run them in sync.
+
+Metabase is out of scope for now (removed from SOURCES).

@@ -32,7 +32,6 @@ const kindBySource: Record<Source, Kind> = {
   linear: "issue",
   notion: "page",
   attio: "record",
-  metabase: "dashboard",
   sheets: "record",
 };
 

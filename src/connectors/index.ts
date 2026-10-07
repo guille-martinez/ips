@@ -7,7 +7,6 @@ import { granola } from "./granola";
 import { linear } from "./linear";
 import { notion } from "./notion";
 import { attio } from "./attio";
-import { metabase } from "./metabase";
 import { sheets } from "./sheets";
 
 export const connectors: Record<Source, Connector> = {
@@ -18,6 +17,5 @@ export const connectors: Record<Source, Connector> = {
   linear,
   notion,
   attio,
-  metabase,
   sheets,
 };

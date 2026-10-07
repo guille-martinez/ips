@@ -17,7 +17,6 @@ export const SOURCES = [
   "linear",
   "notion",
   "attio",
-  "metabase",
   "sheets",
 ] as const;
 export type Source = (typeof SOURCES)[number];
@@ -30,7 +29,7 @@ export const KINDS = [
   "issue",
   "page",
   "record",
-  "dashboard",
+  "dashboard", // reserved: Metabase is out of scope for now
 ] as const;
 export type Kind = (typeof KINDS)[number];
 
