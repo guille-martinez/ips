@@ -24,9 +24,23 @@ type Page = {
   created_by: PartialUser;
   last_edited_by: PartialUser;
   archived?: boolean;
+  is_archived?: boolean;
   in_trash?: boolean;
   parent: { type: string; [k: string]: unknown };
-  properties: Record<string, { type: string; title?: RichText[] }>;
+  properties: Record<string, Property>;
+};
+type PropUser = { id: string; name?: string | null; person?: { email?: string } };
+type Property = {
+  type: string;
+  title?: RichText[];
+  rich_text?: RichText[];
+  status?: { name: string } | null;
+  select?: { name: string } | null;
+  multi_select?: { name: string }[];
+  people?: PropUser[];
+  date?: { start: string; end: string | null } | null;
+  number?: number | null;
+  checkbox?: boolean;
 };
 type SearchResponse = { results: (Page | { object: "database"; id: string; last_edited_time: string })[]; has_more: boolean; next_cursor: string | null };
 type Block = { id: string; type: string; has_children?: boolean; [k: string]: unknown };
@@ -112,7 +126,7 @@ export function makeNotion(fetchImpl?: typeof fetch): Connector {
           break;
         }
         if (r.last_edited_time > maxSeen) maxSeen = r.last_edited_time;
-        if (r.archived || r.in_trash) continue;
+        if (r.archived || r.is_archived || r.in_trash) continue;
         items.push(toItem(r, await firstLevelBlocks(r.id), people));
       }
 
@@ -164,18 +178,39 @@ export function blockText(b: Block): string | null {
   }
 }
 
+/** Database-row properties as "Name: value" lines, so status, people and dates are searchable. */
+export function propertyLines(p: Page): string[] {
+  const out: string[] = [];
+  for (const [name, v] of Object.entries(p.properties)) {
+    let val: string | null = null;
+    if (v.type === "rich_text") val = plain(v.rich_text).trim();
+    else if (v.type === "status") val = v.status?.name ?? null;
+    else if (v.type === "select") val = v.select?.name ?? null;
+    else if (v.type === "multi_select") val = (v.multi_select ?? []).map((o) => o.name).join(", ");
+    else if (v.type === "people") val = (v.people ?? []).map((u) => u.name ?? u.person?.email ?? "").filter(Boolean).join(", ");
+    else if (v.type === "date") val = v.date ? [v.date.start, v.date.end].filter(Boolean).join(" → ") : null;
+    else if (v.type === "number") val = v.number == null ? null : String(v.number);
+    else if (v.type === "checkbox") val = v.checkbox ? "yes" : null;
+    if (val) out.push(`${name}: ${val}`);
+  }
+  return out;
+}
+
 function mentionedUsers(rt: RichText[] | undefined): string[] {
   return (rt ?? []).flatMap((t) => (t.type === "mention" && t.mention?.type === "user" && t.mention.user ? [t.mention.user.id] : []));
 }
 
 export function toItem(p: Page, blocks: Block[], people: Map<string, User>): NewItem {
+  const propPeople = Object.values(p.properties).flatMap((v) => (v.type === "people" ? (v.people ?? []) : []));
+  const fromProps = new Map(propPeople.map((u): [string, User] => [u.id, { id: u.id, type: "person", name: u.name ?? null, person: u.person }]));
+  const lookup = (id: string) => people.get(id) ?? fromProps.get(id);
   const who = (id: string): Participant | null => {
-    const u = people.get(id);
+    const u = lookup(id);
     if (u?.type === "bot") return null;
     return u ? { name: u.name ?? undefined, email: u.person?.email } : { handle: id };
   };
   const participants: Participant[] = [];
-  const ids = [p.created_by.id, p.last_edited_by.id, ...blocks.flatMap((b) => mentionedUsers(richTextOf(b)))];
+  const ids = [p.created_by.id, p.last_edited_by.id, ...propPeople.map((u) => u.id), ...blocks.flatMap((b) => mentionedUsers(richTextOf(b)))];
   for (const id of new Set(ids)) {
     const w = who(id);
     if (w) participants.push(w);
@@ -185,13 +220,13 @@ export function toItem(p: Page, blocks: Block[], people: Map<string, User>): New
     .filter((b) => b.type === "to_do" && !(b.to_do as { checked?: boolean }).checked)
     .map((b) => ({
       text: plain(richTextOf(b)).trim(),
-      mentions: mentionedUsers(richTextOf(b)).map((id) => people.get(id)?.person?.email ?? id),
+      mentions: mentionedUsers(richTextOf(b)).map((id) => lookup(id)?.person?.email ?? id),
     }))
     .filter((t) => t.text);
 
   const title = pageTitle(p) || "(untitled page)";
   const lines = blocks.map(blockText).filter((l): l is string => !!l && !!l.trim());
-  const body = [title, ...lines].join("\n").slice(0, BODY_CAP);
+  const body = [title, ...propertyLines(p), ...lines].join("\n").slice(0, BODY_CAP);
   const editor = people.get(p.last_edited_by.id);
 
   return {

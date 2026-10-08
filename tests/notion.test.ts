@@ -7,6 +7,8 @@ import { makeNotion } from "@/connectors/notion";
 
 const json = (b: unknown) => new Response(JSON.stringify(b), { status: 200 });
 const STRATEGY = "11111111-1111-4111-8111-111111111111";
+const RFC_OPEN = "88888888-8888-4888-8888-888888888888";
+const RFC_APPROVED = "99999999-9999-4999-8999-999999999999";
 
 beforeAll(() => {
   // backfillSince() and the view's 30-day window are relative to now: pin the clock (Date only).
@@ -46,7 +48,7 @@ it("first run pages through search, skips databases and trashed pages, maps bloc
   const { n, calls } = fakeNotion();
   const p1 = await n.sync(null);
   expect(p1.hasMore).toBe(true);
-  expect(p1.items.map((i) => i.externalId)).toEqual([STRATEGY]);
+  expect(p1.items.map((i) => i.externalId)).toEqual([STRATEGY, RFC_OPEN, RFC_APPROVED]);
   expect(calls[0].body).toMatchObject({ filter: { property: "object", value: "page" }, sort: { timestamp: "last_edited_time", direction: "descending" } });
 
   const it0 = p1.items[0];
@@ -59,6 +61,8 @@ it("first run pages through search, skips databases and trashed pages, maps bloc
   expect(it0.bodyText).toBe(
     [
       "Strategy Weekly #15",
+      "Week: 40",
+      "Date: 2026-10-02",
       "## Action items for next week",
       "[ ] @Me Review the Slack thread on use cases",
       "[x] @Ana Share login",
@@ -71,6 +75,13 @@ it("first run pages through search, skips databases and trashed pages, maps bloc
     { text: "@Me Review the Slack thread on use cases", mentions: ["me@example.com"] },
   ]);
   expect(calls.some((c) => c.path.includes("33333333"))).toBe(false); // trashed: no block fetch
+
+  const rfc = p1.items[1];
+  expect(rfc.bodyText).toBe(
+    ["RFC: Claims engine", "Status: Under Review", "Authors: Ana", "Reviewers: Me, Bo", "Summary: Move claims to an event engine"].join("\n"),
+  );
+  // Bo isn't in the workspace user list, but the people property carries name and email.
+  expect(rfc.participants?.map((p) => p.email)).toEqual(["ana@example.com", "me@example.com", "bo@example.com"]);
 
   // Page 2 contains a page older than the backfill window: stop there even though has_more is true.
   const p2 = await n.sync(p1.nextCursor);
@@ -105,14 +116,24 @@ it("view: Pending lists pages with open to-dos that mention me", async () => {
 
   delete process.env.NOTION_ME_EMAIL;
   expect(notionView.pending!()).toEqual([]);
-  expect(notionView.tile().items.map((i) => i.title)).toEqual(["Strategy Weekly #15"]);
+  expect(notionView.tile().items.map((i) => [i.title, i.badge])).toEqual([
+    ["Strategy Weekly #15", null],
+    ["RFC: Claims engine", "Under Review"],
+    ["RFC: Scrapers", "Under Review"],
+  ]);
 
   process.env.NOTION_ME_EMAIL = "Me@Example.com";
-  expect(notionView.pending!().map((i) => [i.title, i.badge])).toEqual([["Strategy Weekly #15", "1 to-do"]]);
-  expect(notionView.tile().stats).toEqual([
-    { label: "edited 7d", value: 1 },
-    { label: "pages w/ my to-dos", value: 1 },
+  // Reviews first (I'm a reviewer and haven't approved), then pages with open to-dos for me.
+  expect(notionView.pending!().map((i) => [i.title, i.badge])).toEqual([
+    ["RFC: Claims engine", "Under Review"],
+    ["Strategy Weekly #15", "1 to-do"],
   ]);
-  process.env.NOTION_ME_EMAIL = "ana@example.com"; // Ana's to-do is checked
+  expect(notionView.tile().stats).toEqual([
+    { label: "edited 7d", value: 3 },
+    { label: "to review", value: 1 },
+  ]);
+  process.env.NOTION_ME_EMAIL = "bo@example.com"; // reviewer on both RFCs, no to-dos
+  expect(notionView.pending!().map((i) => i.title)).toEqual(["RFC: Claims engine", "RFC: Scrapers"]);
+  process.env.NOTION_ME_EMAIL = "ana@example.com"; // author, not reviewer; her to-do is checked
   expect(notionView.pending!()).toEqual([]);
 });
