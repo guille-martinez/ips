@@ -75,3 +75,38 @@ it("switches to a strict floor when a full page shares the same updatedAt", asyn
   await l.sync(r.nextCursor);
   expect(calls[1].variables.filter?.updatedAt).toEqual({ gt: "2026-10-01T00:00:00Z", lt: floor });
 });
+
+it("view: pending = mine + actionable, drops waiting/done/others', keeps overdue backlog, due first", async () => {
+  const fs = await import("node:fs");
+  const os = await import("node:os");
+  const path = await import("node:path");
+  process.env.IPS_DB_PATH = path.join(fs.mkdtempSync(path.join(os.tmpdir(), "ips-linear-")), "test.db");
+  const { getDb } = await import("@/db/client");
+  const { upsertItems } = await import("@/sync/run");
+  const { toItem } = await import("@/connectors/linear");
+  const { linearView } = await import("@/views/linear");
+
+  const base = fx.page1.data.issues.nodes[0];
+  const me = { id: "u-me", name: "Me", email: "me@example.com", isMe: true };
+  const other = { ...me, id: "u-x", isMe: false };
+  const mk = (id: string, state: [string, string], assignee: typeof me | null, dueDate: string | null = null, updatedAt = "2026-10-07T10:00:00.000Z") =>
+    toItem({ ...base, id, identifier: id, state: { name: state[0], type: state[1] }, assignee, dueDate, updatedAt });
+  upsertItems(getDb(), "linear", [
+    mk("A-1", ["Todo", "unstarted"], me),
+    mk("A-2", ["In Progress", "started"], me, null, "2026-10-07T12:00:00.000Z"),
+    mk("A-3", ["Todo", "unstarted"], me, "2020-01-01"), // overdue
+    mk("A-4", ["Backlog", "backlog"], me, "2020-01-02"), // overdue backlog: kept
+    mk("A-5", ["Backlog", "backlog"], me), // plain backlog: dropped
+    mk("A-6", ["Waiting on third party", "started"], me, "2020-01-01"), // waiting: dropped
+    mk("A-7", ["Done", "completed"], me),
+    mk("A-8", ["Todo", "unstarted"], other),
+    mk("A-9", ["Triage", "triage"], null),
+  ]);
+
+  expect(linearView.pending!().map((i) => i.title.split(" ")[0])).toEqual(["A-3", "A-4", "A-2", "A-1"]);
+  expect(linearView.tile().stats).toEqual([
+    { label: "mine open", value: 3 },
+    { label: "overdue", value: 3 },
+    { label: "waiting", value: 1 },
+  ]);
+});
