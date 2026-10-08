@@ -1,0 +1,41 @@
+{
+  "viewer": { "data": { "viewer": { "name": "Me", "email": "me@example.com" }, "organization": { "name": "Acme" } } },
+  "page1": { "data": { "issues": { "pageInfo": { "hasNextPage": true }, "nodes": [
+    {
+      "id": "f8049a49-0000-4000-8000-000000000246", "identifier": "DEP-246", "title": "Set up meeting with carrier AM to get credentials",
+      "description": "1. Create user\n2. Workflow to follow", "url": "https://linear.app/acme/issue/DEP-246/set-up-meeting-with-carrier-am-to-get-credentials",
+      "priority": 0, "priorityLabel": "No priority", "dueDate": null,
+      "createdAt": "2026-10-07T11:10:54.037Z", "updatedAt": "2026-10-07T15:53:53.850Z", "completedAt": null, "canceledAt": null,
+      "state": { "name": "Waiting on third party", "type": "started" },
+      "assignee": { "id": "u-me", "name": "Me", "email": "me@example.com", "isMe": true },
+      "creator": { "id": "u-pc", "name": "Colleague", "email": "colleague@example.com", "isMe": false },
+      "team": { "id": "t-dep", "key": "DEP", "name": "Deployment" }, "project": { "id": "p-1", "name": "Customer - Carrier A" },
+      "parent": null, "labels": { "nodes": [] }
+    },
+    {
+      "id": "54f6f8f4-0000-4000-8000-000000000527", "identifier": "HIR-527", "title": "Candidate A",
+      "description": "", "url": "https://linear.app/acme/issue/HIR-527/candidate-a",
+      "priority": 0, "priorityLabel": "No priority", "dueDate": null,
+      "createdAt": "2026-08-25T15:00:30.320Z", "updatedAt": "2026-10-07T07:16:24.383Z", "completedAt": "2026-10-07T07:16:24.359Z", "canceledAt": null,
+      "state": { "name": "Hired", "type": "completed" },
+      "assignee": { "id": "u-me", "name": "Me", "email": "me@example.com", "isMe": true },
+      "creator": { "id": "u-me", "name": "Me", "email": "me@example.com", "isMe": true },
+      "team": { "id": "t-hir", "key": "HIR", "name": "Hiring" }, "project": { "id": "p-2", "name": "Strategist role" },
+      "parent": null, "labels": { "nodes": [{ "name": "state=meeting-scheduled" }] }
+    }
+  ] } } },
+  "page2": { "data": { "issues": { "pageInfo": { "hasNextPage": false }, "nodes": [
+    {
+      "id": "6d51d59d-0000-4000-8000-000000000213", "identifier": "DEP-213", "title": "Generate CSV with detail per claim",
+      "description": null, "url": "https://linear.app/acme/issue/DEP-213/generate-csv-with-detail-per-claim",
+      "priority": 2, "priorityLabel": "High", "dueDate": "2026-10-06",
+      "createdAt": "2026-10-06T07:57:28.716Z", "updatedAt": "2026-10-07T07:13:41.607Z", "completedAt": "2026-10-07T07:13:41.582Z", "canceledAt": null,
+      "state": { "name": "Done", "type": "completed" },
+      "assignee": null,
+      "creator": null,
+      "team": { "id": "t-dep", "key": "DEP", "name": "Deployment" }, "project": { "id": "p-3", "name": "Customer - Carrier B" },
+      "parent": { "identifier": "DEP-198" }, "labels": { "nodes": [] }
+    }
+  ] } } },
+  "empty": { "data": { "issues": { "pageInfo": { "hasNextPage": false }, "nodes": [] } } }
+}
