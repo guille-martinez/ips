@@ -68,12 +68,13 @@ it("backfills every conversation I'm in, paginates history, follows threads, the
     },
   });
 
-  const s = makeSlack(fetchImpl, () => NOW);
+  const s = makeSlack({ fetchImpl, now: () => NOW, paceMs: 0, callBudget: 2 });
   const r1 = await drain(s, null);
 
   // DMs first; #random (not a member) never visited; C0GONE skipped on not_in_channel.
   expect(calls.some((c) => c.includes("C0NOTME"))).toBe(false);
-  expect(r1.pages).toBe(5);
+  // Budget 2 calls/page: [list+D0ANA p1, D0ANA p2], [G0MP, C0GEN+replies], [C0GONE].
+  expect(r1.pages).toBe(3);
   expect(r1.items.map((i) => i.externalId)).toEqual([
     "D0ANA:1791300200.000200",
     "D0ANA:1791300100.000100",
@@ -95,7 +96,7 @@ it("backfills every conversation I'm in, paginates history, follows threads, the
   expect(mine.updatedAt).toBe(tsToIso("1791300150.000000"));
 
   expect(file.bodyText).toBe("[file: report.pdf]");
-  expect(file.raw).toMatchObject({ channel_type: "mpim", channel_name: "ana, bo, me" });
+  expect(file.raw).toMatchObject({ channel_type: "mpim", channel_name: "Ana, Bo Example" }); // display/real names, without me
 
   expect(parent.title).toBe("@Me deploy plan for #general?");
   expect(parent.raw).toMatchObject({ channel_type: "channel", channel_name: "#general", mentions_me: true });
@@ -106,13 +107,14 @@ it("backfills every conversation I'm in, paginates history, follows threads, the
   const state1 = JSON.parse(r1.cursor!);
   expect(state1.queue).toBeUndefined();
   expect(state1.latest).toEqual({ D0ANA: "1791300200.000200", G0MP: "1791300300.000300", C0GEN: "1791300500.000500" });
-  expect(state1.threads).toEqual({ "C0GEN:1791300400.000400": "1791300450.000450" });
+  expect(state1.threads).toEqual({ "C0GEN:1791300400.000400": { t: "1791300450.000450", m: 1 } }); // mentions me → mine
+  expect(state1.checked).toEqual({});
 
   // Second run: new DM message, plus a new reply on a thread whose parent is older than the high-water mark.
   run = 2;
   const r2 = await drain(s, r1.cursor);
   expect(r2.items.map((i) => i.externalId)).toEqual(["D0ANA:1791308000.000800", "C0GEN:1791309000.000900"]);
-  expect(JSON.parse(r2.cursor!).threads).toEqual({ "C0GEN:1791300400.000400": "1791309000.000900" });
+  expect(JSON.parse(r2.cursor!).threads).toEqual({ "C0GEN:1791300400.000400": { t: "1791309000.000900", m: 1 } });
 });
 
 it("stops watching a thread once it has been quiet for 3 days", async () => {
@@ -123,22 +125,67 @@ it("stops watching a thread once it has been quiet for 3 days", async () => {
     "conversations.replies": () => fx.replies_general,
   });
   const cursor = JSON.stringify({ latest: {}, threads: { "C0GEN:1791300400.000400": "1791300450.000450" } });
-  const r = await drain(makeSlack(fetchImpl, () => NOW + 4 * 86_400_000), cursor);
+  const r = await drain(makeSlack({ fetchImpl, now: () => NOW + 4 * 86_400_000, paceMs: 0 }), cursor);
   expect(calls.filter((c) => c.startsWith("conversations.replies")).length).toBe(1);
   expect(JSON.parse(r.cursor!).threads).toEqual({});
+});
+
+it("fits a whole quiet cycle in one page with the default budget", async () => {
+  process.env.SLACK_USER_TOKEN = "xoxp-test";
+  const { fetchImpl } = fakeSlack({ ...base, "conversations.history": () => fx.empty_history });
+  const r = await makeSlack({ fetchImpl, paceMs: 0 }).sync(null);
+  expect(r.hasMore).toBe(false);
+  expect(Object.keys(JSON.parse(r.nextCursor!).latest)).toEqual(["D0ANA", "G0MP", "C0GEN", "C0GONE"]);
+});
+
+it("checks quiet channels only every 30 min", async () => {
+  process.env.SLACK_USER_TOKEN = "xoxp-test";
+  const { fetchImpl, calls } = fakeSlack({ ...base, "conversations.history": () => fx.empty_history });
+  let t = NOW;
+  const s = makeSlack({ fetchImpl, now: () => t, paceMs: 0 });
+  const history = () => calls.filter((c) => c.startsWith("conversations.history")).map((c) => new URLSearchParams(c.split("?")[1]).get("channel"));
+
+  // Backfill finds nothing anywhere → all four channels are quiet.
+  const r1 = await drain(s, null);
+  expect(history()).toEqual(["D0ANA", "G0MP", "C0GEN", "C0GONE"]);
+  expect(Object.keys(JSON.parse(r1.cursor!).checked)).toEqual(["D0ANA", "G0MP", "C0GEN", "C0GONE"]);
+
+  calls.length = 0;
+  t = NOW + 10 * 60_000;
+  const r2 = await drain(s, r1.cursor);
+  expect(history()).toEqual([]);
+
+  calls.length = 0;
+  t = NOW + 31 * 60_000;
+  await drain(s, r2.cursor);
+  expect(history()).toEqual(["D0ANA", "G0MP", "C0GEN", "C0GONE"]);
+});
+
+it("watches threads I'm not in for 24h, threads I'm in for 3 days", async () => {
+  process.env.SLACK_USER_TOKEN = "xoxp-test";
+  const { fetchImpl } = fakeSlack({ ...base, "conversations.history": () => fx.empty_history, "conversations.replies": () => fx.empty_history });
+  const cursor = JSON.stringify({
+    latest: {},
+    threads: {
+      "C0GEN:1791000000.000001": { t: "1791300450.000450" }, // not mine
+      "C0GEN:1791000000.000002": { t: "1791300450.000450", m: 1 }, // mine
+    },
+  });
+  const r = await drain(makeSlack({ fetchImpl, now: () => NOW + 2 * 86_400_000, paceMs: 0 }), cursor);
+  expect(Object.keys(JSON.parse(r.cursor!).threads)).toEqual(["C0GEN:1791000000.000002"]);
 });
 
 it("surfaces auth errors instead of skipping", async () => {
   process.env.SLACK_USER_TOKEN = "xoxp-test";
   const { fetchImpl } = fakeSlack({ ...base, "auth.test": () => fx.invalid_auth });
-  await expect(makeSlack(fetchImpl).sync(null)).rejects.toThrow("invalid_auth");
-  await expect(makeSlack(fetchImpl).checkAuth()).rejects.toThrow("invalid_auth");
+  await expect(makeSlack({ fetchImpl }).sync(null)).rejects.toThrow("invalid_auth");
+  await expect(makeSlack({ fetchImpl }).checkAuth()).rejects.toThrow("invalid_auth");
 });
 
 it("checkAuth reports who I am", async () => {
   process.env.SLACK_USER_TOKEN = "xoxp-test";
   const { fetchImpl } = fakeSlack(base);
-  expect(await makeSlack(fetchImpl).checkAuth()).toEqual({ ok: true, identity: "me on Example" });
+  expect(await makeSlack({ fetchImpl }).checkAuth()).toEqual({ ok: true, identity: "me on Example" });
 });
 
 it("renders Slack mrkdwn to plain text", () => {
@@ -172,15 +219,16 @@ it("view: Pending shows unanswered DMs and mentions, one per conversation", asyn
       toItem(fx.history_mpim.messages[0], mp, ctx), // group DM, unanswered → pending
       toItem(fx.history_general.messages[1], gen, ctx), // mention…
       toItem(fx.replies_general_new.messages[1], gen, ctx), // …answered in thread
+      toItem({ type: "message", subtype: "bot_message", bot_id: "B1", username: "Alerts", text: "<@UME> build failed", ts: "1791300600.000600" }, gen, ctx), // bot mention → ignored
     ]);
     expect(slackView.pending!().map((p) => [p.title, p.badge])).toEqual([
       ["thanks!", "DM Ana"],
       ["[file: report.pdf]", "DM ana, bo, me"],
     ]);
     expect(slackView.tile().stats).toEqual([
+      { label: "unanswered", value: 2 },
+      { label: "mentions 24h", value: 2 },
       { label: "DMs 24h", value: 4 },
-      { label: "msgs 24h", value: 6 },
-      { label: "mentions 24h", value: 1 },
     ]);
   } finally {
     vi.useRealTimers();
