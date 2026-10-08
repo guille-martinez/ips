@@ -1,0 +1,86 @@
+{
+  "auth_test": { "ok": true, "url": "https://example.slack.com/", "team": "Example", "user": "me", "team_id": "T000", "user_id": "UME" },
+  "users_list": {
+    "ok": true,
+    "members": [
+      { "id": "UME", "name": "me", "real_name": "Me", "profile": { "real_name": "Me", "display_name": "", "email": "me@example.com" } },
+      { "id": "UANA", "name": "ana", "real_name": "Ana", "profile": { "real_name": "Ana Example", "display_name": "Ana", "email": "ana@example.com" } },
+      { "id": "UBO", "name": "bo", "real_name": "Bo", "profile": { "real_name": "Bo Example", "display_name": "", "email": "bo@example.com" } }
+    ],
+    "response_metadata": { "next_cursor": "" }
+  },
+  "conversations_list_page1": {
+    "ok": true,
+    "channels": [
+      { "id": "C0GEN", "name": "general", "is_channel": true, "is_private": false, "is_member": true, "is_archived": false },
+      { "id": "C0NOTME", "name": "random", "is_channel": true, "is_private": false, "is_member": false, "is_archived": false }
+    ],
+    "response_metadata": { "next_cursor": "list2" }
+  },
+  "conversations_list_page2": {
+    "ok": true,
+    "channels": [
+      { "id": "D0ANA", "is_im": true, "user": "UANA", "is_user_deleted": false },
+      { "id": "G0MP", "name": "mpdm-ana--bo--me-1", "is_mpim": true, "is_private": true },
+      { "id": "C0GONE", "name": "secret", "is_channel": true, "is_private": true, "is_member": true }
+    ],
+    "response_metadata": { "next_cursor": "" }
+  },
+  "history_im_page1": {
+    "ok": true,
+    "messages": [
+      { "type": "message", "user": "UANA", "text": "Can you check the <https://example.com/inv/42|invoice> &amp; reply?", "ts": "1791300200.000200" }
+    ],
+    "has_more": true,
+    "response_metadata": { "next_cursor": "im2" }
+  },
+  "history_im_page2": {
+    "ok": true,
+    "messages": [
+      { "type": "message", "user": "UME", "text": "sure", "ts": "1791300100.000100", "edited": { "user": "UME", "ts": "1791300150.000000" } }
+    ],
+    "has_more": false,
+    "response_metadata": { "next_cursor": "" }
+  },
+  "history_mpim": {
+    "ok": true,
+    "messages": [
+      { "type": "message", "user": "UBO", "text": "", "ts": "1791300300.000300", "files": [{ "id": "F1", "name": "report.pdf" }] }
+    ],
+    "has_more": false
+  },
+  "history_general": {
+    "ok": true,
+    "messages": [
+      { "type": "message", "subtype": "channel_join", "user": "UBO", "text": "<@UBO> has joined the channel", "ts": "1791300500.000500" },
+      { "type": "message", "user": "UANA", "text": "<@UME> deploy plan for <#C0GEN|general>?", "ts": "1791300400.000400", "thread_ts": "1791300400.000400", "reply_count": 1, "latest_reply": "1791300450.000450" }
+    ],
+    "has_more": false
+  },
+  "replies_general": {
+    "ok": true,
+    "messages": [
+      { "type": "message", "user": "UANA", "text": "<@UME> deploy plan for <#C0GEN|general>?", "ts": "1791300400.000400", "thread_ts": "1791300400.000400", "reply_count": 1 },
+      { "type": "message", "user": "UBO", "text": "Tuesday", "ts": "1791300450.000450", "thread_ts": "1791300400.000400", "parent_user_id": "UANA" }
+    ],
+    "has_more": false
+  },
+  "replies_general_new": {
+    "ok": true,
+    "messages": [
+      { "type": "message", "user": "UANA", "text": "<@UME> deploy plan for <#C0GEN|general>?", "ts": "1791300400.000400", "thread_ts": "1791300400.000400", "reply_count": 2 },
+      { "type": "message", "user": "UME", "text": "Confirmed", "ts": "1791309000.000900", "thread_ts": "1791300400.000400", "parent_user_id": "UANA" }
+    ],
+    "has_more": false
+  },
+  "history_im_new": {
+    "ok": true,
+    "messages": [
+      { "type": "message", "user": "UANA", "text": "thanks!", "ts": "1791308000.000800" }
+    ],
+    "has_more": false
+  },
+  "empty_history": { "ok": true, "messages": [], "has_more": false },
+  "not_in_channel": { "ok": false, "error": "not_in_channel" },
+  "invalid_auth": { "ok": false, "error": "invalid_auth" }
+}
