@@ -1,0 +1,174 @@
+{
+ "products": {
+  "data": [
+   {
+    "id": {
+     "workspace_id": "00000000-0000-4000-8000-0000000000aa",
+     "object_id": "6405c6f6-bf01-4445-9b41-cb9f6bee4df8",
+     "attribute_id": "00000000-0000-4000-8000-000000000a01"
+    },
+    "title": "Product Name",
+    "api_slug": "product_name_3",
+    "type": "text"
+   },
+   {
+    "id": {
+     "workspace_id": "00000000-0000-4000-8000-0000000000aa",
+     "object_id": "6405c6f6-bf01-4445-9b41-cb9f6bee4df8",
+     "attribute_id": "00000000-0000-4000-8000-000000000a01"
+    },
+    "title": "Deals",
+    "api_slug": "deals",
+    "type": "record-reference"
+   },
+   {
+    "id": {
+     "workspace_id": "00000000-0000-4000-8000-0000000000aa",
+     "object_id": "6405c6f6-bf01-4445-9b41-cb9f6bee4df8",
+     "attribute_id": "00000000-0000-4000-8000-000000000a01"
+    },
+    "title": "Invoice Audit - Spend conversion factor",
+    "api_slug": "invoice_audit_spend_conversion_factor",
+    "type": "number"
+   }
+  ]
+ },
+ "carrier_rate_cards": {
+  "data": [
+   {
+    "id": {
+     "workspace_id": "00000000-0000-4000-8000-0000000000aa",
+     "object_id": "374b2cb3-5ff2-470f-b99a-01f5abe6ec34",
+     "attribute_id": "00000000-0000-4000-8000-000000000a01"
+    },
+    "title": "Carrier name",
+    "api_slug": "carrier_rate_card_name",
+    "type": "text"
+   },
+   {
+    "id": {
+     "workspace_id": "00000000-0000-4000-8000-0000000000aa",
+     "object_id": "374b2cb3-5ff2-470f-b99a-01f5abe6ec34",
+     "attribute_id": "00000000-0000-4000-8000-000000000a01"
+    },
+    "title": "Incidence rate",
+    "api_slug": "incidence_rate",
+    "type": "number"
+   },
+   {
+    "id": {
+     "workspace_id": "00000000-0000-4000-8000-0000000000aa",
+     "object_id": "374b2cb3-5ff2-470f-b99a-01f5abe6ec34",
+     "attribute_id": "00000000-0000-4000-8000-000000000a01"
+    },
+    "title": "Win rate",
+    "api_slug": "win_rate",
+    "type": "number"
+   },
+   {
+    "id": {
+     "workspace_id": "00000000-0000-4000-8000-0000000000aa",
+     "object_id": "374b2cb3-5ff2-470f-b99a-01f5abe6ec34",
+     "attribute_id": "00000000-0000-4000-8000-000000000a01"
+    },
+    "title": "Average refund",
+    "api_slug": "average_refund",
+    "type": "number"
+   },
+   {
+    "id": {
+     "workspace_id": "00000000-0000-4000-8000-0000000000aa",
+     "object_id": "374b2cb3-5ff2-470f-b99a-01f5abe6ec34",
+     "attribute_id": "00000000-0000-4000-8000-000000000a01"
+    },
+    "title": "Carrier opportunity",
+    "api_slug": "carrier_opportunity",
+    "type": "record-reference"
+   }
+  ]
+ },
+ "carriers": {
+  "data": [
+   {
+    "id": {
+     "workspace_id": "00000000-0000-4000-8000-0000000000aa",
+     "object_id": "7ae2f629-d242-4207-93d8-f029a55bb54e",
+     "attribute_id": "00000000-0000-4000-8000-000000000a01"
+    },
+    "title": "Carrier",
+    "api_slug": "carrier_name_3",
+    "type": "record-reference"
+   },
+   {
+    "id": {
+     "workspace_id": "00000000-0000-4000-8000-0000000000aa",
+     "object_id": "7ae2f629-d242-4207-93d8-f029a55bb54e",
+     "attribute_id": "00000000-0000-4000-8000-000000000a01"
+    },
+    "title": "Carrier status",
+    "api_slug": "carrier_status",
+    "type": "status"
+   },
+   {
+    "id": {
+     "workspace_id": "00000000-0000-4000-8000-0000000000aa",
+     "object_id": "7ae2f629-d242-4207-93d8-f029a55bb54e",
+     "attribute_id": "00000000-0000-4000-8000-000000000a01"
+    },
+    "title": "Annual Courier Shipments (Carrier)",
+    "api_slug": "annual_courier_shipments_carrier",
+    "type": "number"
+   },
+   {
+    "id": {
+     "workspace_id": "00000000-0000-4000-8000-0000000000aa",
+     "object_id": "7ae2f629-d242-4207-93d8-f029a55bb54e",
+     "attribute_id": "00000000-0000-4000-8000-000000000a01"
+    },
+    "title": " POC Scope",
+    "api_slug": "poc_month",
+    "type": "select"
+   },
+   {
+    "id": {
+     "workspace_id": "00000000-0000-4000-8000-0000000000aa",
+     "object_id": "7ae2f629-d242-4207-93d8-f029a55bb54e",
+     "attribute_id": "00000000-0000-4000-8000-000000000a01"
+    },
+    "title": "Company",
+    "api_slug": "company",
+    "type": "record-reference"
+   },
+   {
+    "id": {
+     "workspace_id": "00000000-0000-4000-8000-0000000000aa",
+     "object_id": "7ae2f629-d242-4207-93d8-f029a55bb54e",
+     "attribute_id": "00000000-0000-4000-8000-000000000a01"
+    },
+    "title": "Deal",
+    "api_slug": "deal",
+    "type": "record-reference"
+   },
+   {
+    "id": {
+     "workspace_id": "00000000-0000-4000-8000-0000000000aa",
+     "object_id": "7ae2f629-d242-4207-93d8-f029a55bb54e",
+     "attribute_id": "00000000-0000-4000-8000-000000000a01"
+    },
+    "title": "Est. Carrier opportunity value (Opereit)",
+    "api_slug": "est_carrier_opportunity_value_opereit",
+    "type": "currency"
+   },
+   {
+    "id": {
+     "workspace_id": "00000000-0000-4000-8000-0000000000aa",
+     "object_id": "7ae2f629-d242-4207-93d8-f029a55bb54e",
+     "attribute_id": "00000000-0000-4000-8000-000000000a01"
+    },
+    "title": "Carrier opportunity name",
+    "api_slug": "carrier_opportunity_name",
+    "type": "text"
+   }
+  ]
+ }
+}

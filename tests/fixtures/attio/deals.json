@@ -1,7 +1,7 @@
 { "data": [
   { "id": { "workspace_id": "00000000-0000-4000-8000-0000000000aa", "object_id": "23d7be8d-80ab-436e-b6f1-3abf941146bb", "record_id": "216768ad-a4e4-47d1-8dd9-8c5134f18836" },
     "created_at": "2026-10-07T14:45:16.000000000Z",
-    "web_url": "https://app.attio.com/opereit/deal/216768ad-a4e4-47d1-8dd9-8c5134f18836",
+    "web_url": "https://app.attio.com/opereit/deals/record/216768ad-a4e4-47d1-8dd9-8c5134f18836",
     "values": {
       "name": [{ "active_from": "2026-10-07T14:45:16.000000000Z", "active_until": null, "created_by_actor": { "type": "api-token", "id": "00000000-0000-4000-8000-0000000000t1" }, "value": "Harbor Logistics", "attribute_type": "text" }],
       "stage": [{ "active_from": "2026-10-07T16:56:37.000000000Z", "active_until": null, "created_by_actor": { "type": "workspace-member", "id": "bb4f61c2-f3e2-4f9e-a5d9-ebd60fb5edd1" }, "status": { "id": { "workspace_id": "00000000-0000-4000-8000-0000000000aa", "object_id": "23d7be8d-80ab-436e-b6f1-3abf941146bb", "attribute_id": "a3d96be1-4266-4c91-aeca-875c9c6cc40f", "status_id": "d4d8c721-69c1-407e-89a8-8582154d6ae8" }, "title": "Committed", "is_archived": false, "target_time_in_status": null, "celebration_enabled": false }, "attribute_type": "status" }],
@@ -13,7 +13,7 @@
     } },
   { "id": { "workspace_id": "00000000-0000-4000-8000-0000000000aa", "object_id": "23d7be8d-80ab-436e-b6f1-3abf941146bb", "record_id": "9b6fe754-8b8a-4a67-9cc9-b42c0cdf1fd0" },
     "created_at": "2026-06-01T09:00:00.000000000Z",
-    "web_url": "https://app.attio.com/opereit/deal/9b6fe754-8b8a-4a67-9cc9-b42c0cdf1fd0",
+    "web_url": "https://app.attio.com/opereit/deals/record/9b6fe754-8b8a-4a67-9cc9-b42c0cdf1fd0",
     "values": {
       "name": [{ "active_from": "2026-06-01T09:00:00.000000000Z", "active_until": null, "created_by_actor": { "type": "workspace-member", "id": "62442957-7190-400c-8760-6317bb89a8bf" }, "value": "Old Retail Co", "attribute_type": "text" }],
       "stage": [{ "active_from": "2026-07-01T09:00:00.000000000Z", "active_until": null, "created_by_actor": { "type": "workspace-member", "id": "62442957-7190-400c-8760-6317bb89a8bf" }, "status": { "id": { "workspace_id": "00000000-0000-4000-8000-0000000000aa", "object_id": "23d7be8d-80ab-436e-b6f1-3abf941146bb", "attribute_id": "a3d96be1-4266-4c91-aeca-875c9c6cc40f", "status_id": "5239c9ea-3753-433a-a16c-b38e36b63505" }, "title": "Lost - Nurturing", "is_archived": false, "target_time_in_status": null, "celebration_enabled": false }, "attribute_type": "status" }],

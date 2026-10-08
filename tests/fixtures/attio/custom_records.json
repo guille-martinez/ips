@@ -1,0 +1,367 @@
+{
+ "products": {
+  "data": [
+   {
+    "id": {
+     "workspace_id": "00000000-0000-4000-8000-0000000000aa",
+     "object_id": "6405c6f6-bf01-4445-9b41-cb9f6bee4df8",
+     "record_id": "7798c059-7c84-4161-ac30-e27a8fbd3bc0"
+    },
+    "created_at": "2026-05-06T15:00:00.000000000Z",
+    "web_url": "https://app.attio.com/opereit/custom/products/record/7798c059-7c84-4161-ac30-e27a8fbd3bc0",
+    "values": {
+     "record_id": [
+      {
+       "active_from": "2026-05-06T15:00:00.000000000Z",
+       "active_until": null,
+       "created_by_actor": {
+        "type": "workspace-member",
+        "id": "62442957-7190-400c-8760-6317bb89a8bf"
+       },
+       "value": "7798c059-7c84-4161-ac30-e27a8fbd3bc0",
+       "attribute_type": "text"
+      }
+     ],
+     "created_at": [
+      {
+       "active_from": "2026-05-06T15:00:00.000000000Z",
+       "active_until": null,
+       "created_by_actor": {
+        "type": "workspace-member",
+        "id": "62442957-7190-400c-8760-6317bb89a8bf"
+       },
+       "value": "2026-05-06T15:00:00.000000000Z",
+       "attribute_type": "timestamp"
+      }
+     ],
+     "created_by": [
+      {
+       "active_from": "2026-05-06T15:00:00.000000000Z",
+       "active_until": null,
+       "created_by_actor": {
+        "type": "workspace-member",
+        "id": "62442957-7190-400c-8760-6317bb89a8bf"
+       },
+       "referenced_actor_type": "workspace-member",
+       "referenced_actor_id": "62442957-7190-400c-8760-6317bb89a8bf",
+       "attribute_type": "actor-reference"
+      }
+     ],
+     "product_name_3": [
+      {
+       "active_from": "2026-05-06T15:00:00.000000000Z",
+       "active_until": null,
+       "created_by_actor": {
+        "type": "workspace-member",
+        "id": "62442957-7190-400c-8760-6317bb89a8bf"
+       },
+       "value": "Invoice Audit",
+       "attribute_type": "text"
+      }
+     ],
+     "deals": [
+      {
+       "active_from": "2026-10-07T16:56:37.000000000Z",
+       "active_until": null,
+       "created_by_actor": {
+        "type": "workspace-member",
+        "id": "62442957-7190-400c-8760-6317bb89a8bf"
+       },
+       "target_object": "deals",
+       "target_record_id": "216768ad-a4e4-47d1-8dd9-8c5134f18836",
+       "attribute_type": "record-reference"
+      }
+     ],
+     "invoice_audit_spend_conversion_factor": [
+      {
+       "active_from": "2026-05-06T15:00:00.000000000Z",
+       "active_until": null,
+       "created_by_actor": {
+        "type": "workspace-member",
+        "id": "62442957-7190-400c-8760-6317bb89a8bf"
+       },
+       "value": 0.01,
+       "attribute_type": "number"
+      }
+     ]
+    }
+   }
+  ]
+ },
+ "carrier_rate_cards": {
+  "data": [
+   {
+    "id": {
+     "workspace_id": "00000000-0000-4000-8000-0000000000aa",
+     "object_id": "374b2cb3-5ff2-470f-b99a-01f5abe6ec34",
+     "record_id": "96e9b9bd-98cd-4452-8053-819897bd245d"
+    },
+    "created_at": "2026-07-13T19:14:00.473000000Z",
+    "web_url": "https://app.attio.com/opereit/custom/carrier_rate_cards/record/96e9b9bd-98cd-4452-8053-819897bd245d",
+    "values": {
+     "record_id": [
+      {
+       "active_from": "2026-07-13T19:14:00.473000000Z",
+       "active_until": null,
+       "created_by_actor": {
+        "type": "workspace-member",
+        "id": "62442957-7190-400c-8760-6317bb89a8bf"
+       },
+       "value": "96e9b9bd-98cd-4452-8053-819897bd245d",
+       "attribute_type": "text"
+      }
+     ],
+     "created_at": [
+      {
+       "active_from": "2026-07-13T19:14:00.473000000Z",
+       "active_until": null,
+       "created_by_actor": {
+        "type": "workspace-member",
+        "id": "62442957-7190-400c-8760-6317bb89a8bf"
+       },
+       "value": "2026-07-13T19:14:00.473000000Z",
+       "attribute_type": "timestamp"
+      }
+     ],
+     "created_by": [
+      {
+       "active_from": "2026-07-13T19:14:00.473000000Z",
+       "active_until": null,
+       "created_by_actor": {
+        "type": "workspace-member",
+        "id": "62442957-7190-400c-8760-6317bb89a8bf"
+       },
+       "referenced_actor_type": "workspace-member",
+       "referenced_actor_id": "62442957-7190-400c-8760-6317bb89a8bf",
+       "attribute_type": "actor-reference"
+      }
+     ],
+     "carrier_rate_card_name": [
+      {
+       "active_from": "2026-07-13T19:14:00.473000000Z",
+       "active_until": null,
+       "created_by_actor": {
+        "type": "workspace-member",
+        "id": "62442957-7190-400c-8760-6317bb89a8bf"
+       },
+       "value": "Nacex",
+       "attribute_type": "text"
+      }
+     ],
+     "incidence_rate": [
+      {
+       "active_from": "2026-07-13T19:14:00.473000000Z",
+       "active_until": null,
+       "created_by_actor": {
+        "type": "workspace-member",
+        "id": "62442957-7190-400c-8760-6317bb89a8bf"
+       },
+       "value": 0.01,
+       "attribute_type": "number"
+      }
+     ],
+     "win_rate": [
+      {
+       "active_from": "2026-07-14T16:06:32.565000000Z",
+       "active_until": null,
+       "created_by_actor": {
+        "type": "workspace-member",
+        "id": "62442957-7190-400c-8760-6317bb89a8bf"
+       },
+       "value": 0.25,
+       "attribute_type": "number"
+      }
+     ],
+     "average_refund": [
+      {
+       "active_from": "2026-09-30T20:21:09.299623412Z",
+       "active_until": null,
+       "created_by_actor": {
+        "type": "workspace-member",
+        "id": "62442957-7190-400c-8760-6317bb89a8bf"
+       },
+       "value": 15,
+       "attribute_type": "number"
+      }
+     ],
+     "carrier_opportunity": [
+      {
+       "active_from": "2026-09-30T15:13:01.321904164Z",
+       "active_until": null,
+       "created_by_actor": {
+        "type": "workspace-member",
+        "id": "62442957-7190-400c-8760-6317bb89a8bf"
+       },
+       "target_object": "carriers",
+       "target_record_id": "e09d5794-5236-4c48-b8bf-b2f3bdbf1e49",
+       "attribute_type": "record-reference"
+      }
+     ],
+     "company": []
+    }
+   }
+  ]
+ },
+ "carriers": {
+  "data": [
+   {
+    "id": {
+     "workspace_id": "00000000-0000-4000-8000-0000000000aa",
+     "object_id": "7ae2f629-d242-4207-93d8-f029a55bb54e",
+     "record_id": "e09d5794-5236-4c48-b8bf-b2f3bdbf1e49"
+    },
+    "created_at": "2026-09-30T15:13:01.321904164Z",
+    "web_url": "https://app.attio.com/opereit/custom/carriers/record/e09d5794-5236-4c48-b8bf-b2f3bdbf1e49",
+    "values": {
+     "record_id": [
+      {
+       "active_from": "2026-09-30T15:13:01.321904164Z",
+       "active_until": null,
+       "created_by_actor": {
+        "type": "workspace-member",
+        "id": "62442957-7190-400c-8760-6317bb89a8bf"
+       },
+       "value": "e09d5794-5236-4c48-b8bf-b2f3bdbf1e49",
+       "attribute_type": "text"
+      }
+     ],
+     "created_at": [
+      {
+       "active_from": "2026-09-30T15:13:01.321904164Z",
+       "active_until": null,
+       "created_by_actor": {
+        "type": "workspace-member",
+        "id": "62442957-7190-400c-8760-6317bb89a8bf"
+       },
+       "value": "2026-09-30T15:13:01.321904164Z",
+       "attribute_type": "timestamp"
+      }
+     ],
+     "created_by": [
+      {
+       "active_from": "2026-09-30T15:13:01.321904164Z",
+       "active_until": null,
+       "created_by_actor": {
+        "type": "workspace-member",
+        "id": "62442957-7190-400c-8760-6317bb89a8bf"
+       },
+       "referenced_actor_type": "workspace-member",
+       "referenced_actor_id": "62442957-7190-400c-8760-6317bb89a8bf",
+       "attribute_type": "actor-reference"
+      }
+     ],
+     "carrier_name_3": [
+      {
+       "active_from": "2026-09-30T15:13:01.321904164Z",
+       "active_until": null,
+       "created_by_actor": {
+        "type": "workspace-member",
+        "id": "62442957-7190-400c-8760-6317bb89a8bf"
+       },
+       "target_object": "carrier_rate_cards",
+       "target_record_id": "96e9b9bd-98cd-4452-8053-819897bd245d",
+       "attribute_type": "record-reference"
+      }
+     ],
+     "carrier_status": [
+      {
+       "active_from": "2026-10-01T09:00:00.000000000Z",
+       "active_until": null,
+       "created_by_actor": {
+        "type": "workspace-member",
+        "id": "62442957-7190-400c-8760-6317bb89a8bf"
+       },
+       "status": {
+        "id": {
+         "workspace_id": "00000000-0000-4000-8000-0000000000aa",
+         "object_id": "7ae2f629-d242-4207-93d8-f029a55bb54e",
+         "attribute_id": "54123065-263e-4534-9051-822a193bee83",
+         "status_id": "40413a23-df04-48bb-a756-02dfd4d86921"
+        },
+        "title": "Live",
+        "is_archived": false,
+        "target_time_in_status": null,
+        "celebration_enabled": false
+       },
+       "attribute_type": "status"
+      }
+     ],
+     "annual_courier_shipments_carrier": [
+      {
+       "active_from": "2026-09-30T15:13:01.321904164Z",
+       "active_until": null,
+       "created_by_actor": {
+        "type": "workspace-member",
+        "id": "62442957-7190-400c-8760-6317bb89a8bf"
+       },
+       "value": 500000,
+       "attribute_type": "number"
+      }
+     ],
+     "est_weekly_claims": [],
+     "poc_month": [
+      {
+       "active_from": "2026-09-30T15:13:01.321904164Z",
+       "active_until": null,
+       "created_by_actor": {
+        "type": "workspace-member",
+        "id": "62442957-7190-400c-8760-6317bb89a8bf"
+       },
+       "option": {
+        "id": {
+         "workspace_id": "00000000-0000-4000-8000-0000000000aa",
+         "object_id": "7ae2f629-d242-4207-93d8-f029a55bb54e",
+         "attribute_id": "d0c747a4-96d6-4f4d-ba96-cdc69867d5d4",
+         "option_id": "cb2497d7-f69e-4f03-ad11-9165c2e804b0"
+        },
+        "title": "POC Month 1",
+        "is_archived": false
+       },
+       "attribute_type": "select"
+      }
+     ],
+     "company": [
+      {
+       "active_from": "2026-09-30T15:13:01.321904164Z",
+       "active_until": null,
+       "created_by_actor": {
+        "type": "workspace-member",
+        "id": "62442957-7190-400c-8760-6317bb89a8bf"
+       },
+       "target_object": "companies",
+       "target_record_id": "e1d9e3eb-0fbc-48cc-9fe9-7ce99df93c47",
+       "attribute_type": "record-reference"
+      }
+     ],
+     "deal": [
+      {
+       "active_from": "2026-09-30T15:13:01.321904164Z",
+       "active_until": null,
+       "created_by_actor": {
+        "type": "workspace-member",
+        "id": "62442957-7190-400c-8760-6317bb89a8bf"
+       },
+       "target_object": "deals",
+       "target_record_id": "216768ad-a4e4-47d1-8dd9-8c5134f18836",
+       "attribute_type": "record-reference"
+      }
+     ],
+     "est_carrier_opportunity_value_opereit": [
+      {
+       "active_from": "2026-09-30T15:13:01.321904164Z",
+       "active_until": null,
+       "created_by_actor": {
+        "type": "workspace-member",
+        "id": "62442957-7190-400c-8760-6317bb89a8bf"
+       },
+       "currency_value": 4500,
+       "currency_code": "EUR",
+       "attribute_type": "currency"
+      }
+     ],
+     "carrier_opportunity_name": []
+    }
+   }
+  ]
+ }
+}
