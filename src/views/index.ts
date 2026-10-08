@@ -7,6 +7,7 @@ import { gmailView } from "./gmail";
 import { slackView } from "./slack";
 import { granolaView } from "./granola";
 import { notionView } from "./notion";
+import { attioView } from "./attio";
 
 export const views: Record<Source, SourceView> = {
   calendar: genericView("calendar", "Calendar"),
@@ -16,7 +17,7 @@ export const views: Record<Source, SourceView> = {
   granola: granolaView,
   sheets: sheetsView,
   notion: notionView,
-  attio: genericView("attio", "Attio"),
+  attio: attioView,
 };
 
 /** Merged "needs me" list across every source. */

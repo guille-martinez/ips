@@ -1,0 +1,4 @@
+{ "data": [
+  { "id": { "workspace_id": "00000000-0000-4000-8000-0000000000aa", "workspace_member_id": "bb4f61c2-f3e2-4f9e-a5d9-ebd60fb5edd1" }, "first_name": "Alex", "last_name": "Seller", "avatar_url": null, "email_address": "alex@example.com", "created_at": "2026-05-06T13:18:42.369000000Z", "access_level": "admin" },
+  { "id": { "workspace_id": "00000000-0000-4000-8000-0000000000aa", "workspace_member_id": "62442957-7190-400c-8760-6317bb89a8bf" }, "first_name": "Jo", "last_name": "Founder", "avatar_url": null, "email_address": "jo@example.com", "created_at": "2026-05-06T13:18:42.369000000Z", "access_level": "admin" }
+] }
