@@ -8,9 +8,10 @@ import { slackView } from "./slack";
 import { granolaView } from "./granola";
 import { notionView } from "./notion";
 import { attioView } from "./attio";
+import { calendarView } from "./calendar";
 
 export const views: Record<Source, SourceView> = {
-  calendar: genericView("calendar", "Calendar"),
+  calendar: calendarView,
   slack: slackView,
   gmail: gmailView,
   linear: linearView,
