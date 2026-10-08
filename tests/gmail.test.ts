@@ -5,8 +5,9 @@ import { makeGmail, parseAddresses } from "@/connectors/gmail";
 const json = (b: unknown, status = 200) => new Response(JSON.stringify(b), { status });
 const getToken = async () => "ya29.test";
 
-function fakeGmail(opts: { historyStatus?: number } = {}) {
+function fakeGmail(opts: { historyStatus?: number; quotaErrors?: number } = {}) {
   const calls: string[] = [];
+  let quota = opts.quotaErrors ?? 0;
   const fetchImpl = vi.fn(async (url: URL | RequestInfo, init?: RequestInit) => {
     const u = new URL(String(url));
     expect(init?.method).toBe("GET");
@@ -16,10 +17,16 @@ function fakeGmail(opts: { historyStatus?: number } = {}) {
     if (p === "/profile") return json(fx.profile);
     if (p === "/messages") return json(u.searchParams.get("pageToken") === "p2" ? fx.list_page2 : fx.list_page1);
     if (p === "/history") return opts.historyStatus ? json({ error: "gone" }, opts.historyStatus) : json(fx.history);
+    if (quota > 0) {
+      quota--;
+      return json({ error: { code: 403, message: "Quota exceeded for quota metric 'Total Query Cost'" } }, 403);
+    }
     const m = (fx.messages as Record<string, unknown>)[p.split("/").pop()!];
     return m ? json(m) : json({ error: "not found" }, 404);
   }) as unknown as typeof fetch;
-  return { g: makeGmail({ fetchImpl, getToken }), calls };
+  const sleeps: number[] = [];
+  const sleep = async (ms: number) => void sleeps.push(ms);
+  return { g: makeGmail({ fetchImpl, getToken, sleep }), calls, sleeps };
 }
 
 it("backfills the window page by page, then switches to history from the pre-backfill historyId", async () => {
@@ -67,6 +74,18 @@ it("falls back to a full backfill when the historyId has expired", async () => {
   const { g } = fakeGmail({ historyStatus: 404 });
   const res = await g.sync(JSON.stringify({ phase: "history", historyId: "1" }));
   expect(res).toEqual({ items: [], nextCursor: null, hasMore: true });
+});
+
+it("backs off and retries when Gmail reports per-user quota exceeded", async () => {
+  const { g, sleeps } = fakeGmail({ quotaErrors: 2 });
+  const res = await g.sync(JSON.stringify({ phase: "history", historyId: "322000" }));
+  expect(res.items).toHaveLength(2);
+  expect(sleeps).toEqual([4000, 4000]);
+});
+
+it("gives up after repeated quota errors so the runner keeps the last good cursor", async () => {
+  const { g } = fakeGmail({ quotaErrors: 99 });
+  await expect(g.sync(JSON.stringify({ phase: "history", historyId: "322000" }))).rejects.toThrow(/403/);
 });
 
 it("parses address headers with quoted commas", () => {

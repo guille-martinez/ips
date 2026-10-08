@@ -3,8 +3,11 @@ import { googleApi, googleConfigured, type GoogleDeps } from "@/lib/google-auth"
 import type { Participant } from "@/db/schema";
 import { backfillSince, type Connector, type NewItem } from "./types";
 
-// Calendar REST v3, primary calendar. First run: events.list from timeMin with
+// Calendar REST v3, primary calendar. Full sync: events.list over [backfill, now + 60d] with
 // singleEvents=true (recurring meetings expanded into instances), then nextSyncToken.
+// The window needs an end: without timeMax every weekly series expands out to ~2040.
+// A sync token keeps the window it was created with, so once a week we redo the full
+// sync to slide the window forward (about 500 events, cheap).
 
 type When = { dateTime?: string; date?: string; timeZone?: string };
 type Person = { email?: string; displayName?: string; self?: boolean; organizer?: boolean; responseStatus?: string };
@@ -27,8 +30,15 @@ export type CalEvent = {
 };
 type ListResponse = { items?: CalEvent[]; nextPageToken?: string; nextSyncToken?: string };
 
-/** `syncToken` once the initial listing is done; `page` while paging either kind of listing. */
-type State = { syncToken?: string; page?: string };
+/**
+ * `windowEnd` = the timeMax the current token was created with.
+ * `syncToken` once the full listing is done; `page` while paging either kind of listing.
+ */
+type State = { windowEnd?: string; syncToken?: string; page?: string };
+
+const HORIZON_DAYS = 60;
+const RESYNC_EVERY_DAYS = 7;
+const DAY = 86_400_000;
 
 export function makeCalendar(deps: GoogleDeps = {}): Connector {
   const api = googleApi("https://www.googleapis.com", deps);
@@ -45,14 +55,18 @@ export function makeCalendar(deps: GoogleDeps = {}): Connector {
     },
 
     async sync(cursor) {
-      const state: State = cursor ? JSON.parse(cursor) : {};
+      let state: State = cursor ? JSON.parse(cursor) : {};
+      // Slide the window: once a week (between pages only), drop the token and redo the full sync.
+      const stale = !state.windowEnd || Date.parse(state.windowEnd) - Date.now() < (HORIZON_DAYS - RESYNC_EVERY_DAYS) * DAY;
+      if (!state.page && stale) state = { windowEnd: new Date(Date.now() + HORIZON_DAYS * DAY).toISOString() };
       let res: ListResponse;
       try {
         res = await api.get<ListResponse>(EVENTS, {
           singleEvents: true,
           maxResults: 250,
-          // A sync token can't be combined with timeMin; the initial query's window is baked into it.
+          // A sync token can't be combined with timeMin/timeMax; the full sync's window is baked into it.
           timeMin: state.syncToken ? undefined : backfillSince().toISOString(),
+          timeMax: state.syncToken ? undefined : state.windowEnd,
           syncToken: state.syncToken,
           pageToken: state.page,
         });
@@ -63,7 +77,7 @@ export function makeCalendar(deps: GoogleDeps = {}): Connector {
       }
 
       const items = (res.items ?? []).filter(keep).map(toItem);
-      const next: State = res.nextPageToken ? { syncToken: state.syncToken, page: res.nextPageToken } : { syncToken: res.nextSyncToken };
+      const next: State = res.nextPageToken ? { ...state, page: res.nextPageToken } : { windowEnd: state.windowEnd, syncToken: res.nextSyncToken };
       return { items, nextCursor: JSON.stringify(next), hasMore: !!res.nextPageToken };
     },
   };

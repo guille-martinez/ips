@@ -36,10 +36,26 @@ type State = { phase: "backfill" | "history"; historyId: string; page?: string }
 
 const PAGE_SIZE = 50;
 const BODY_CAP = 20_000;
-const CONCURRENCY = 8;
+const CONCURRENCY = 4;
+const RETRIES = 4;
 
-export function makeGmail(deps: GoogleDeps = {}): Connector {
+/** Gmail signals per-user quota as 403 rateLimitExceeded (or 429, after the client's own retries). */
+const isQuota = (e: unknown) => e instanceof HttpError && (e.status === 429 || (e.status === 403 && /quota|rate ?limit/i.test(e.message)));
+
+async function withBackoff<T>(fn: () => Promise<T>, sleep: (ms: number) => Promise<void>): Promise<T> {
+  for (let attempt = 0; ; attempt++) {
+    try {
+      return await fn();
+    } catch (e) {
+      if (!isQuota(e) || attempt >= RETRIES) throw e;
+      await sleep(2 ** attempt * 4000); // 4s, 8s, 16s, 32s
+    }
+  }
+}
+
+export function makeGmail(deps: GoogleDeps & { sleep?: (ms: number) => Promise<void> } = {}): Connector {
   const api = googleApi("https://gmail.googleapis.com", deps);
+  const sleep = deps.sleep ?? ((ms: number) => new Promise<void>((r) => setTimeout(r, ms)));
 
   async function fetchMessages(ids: string[]): Promise<NewItem[]> {
     const out: NewItem[] = [];
@@ -47,7 +63,7 @@ export function makeGmail(deps: GoogleDeps = {}): Connector {
     async function worker() {
       for (let id = queue.shift(); id; id = queue.shift()) {
         try {
-          const m = await api.get<GmailMessage>(`/gmail/v1/users/me/messages/${encodeURIComponent(id)}`, { format: "full" });
+          const m = await withBackoff(() => api.get<GmailMessage>(`/gmail/v1/users/me/messages/${encodeURIComponent(id)}`, { format: "full" }), sleep);
           if (m.labelIds?.includes("DRAFT")) continue;
           out.push(toItem(m));
         } catch (e) {

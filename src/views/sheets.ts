@@ -2,8 +2,15 @@ import type { SourceView } from "./types";
 import { count, rows, toView } from "./helpers";
 
 // Expects raw = { tab: "Daily prios" | "Readings", status, deadline, owner, link } (see docs/fanout.md).
-const OPEN = `json_extract(raw_json,'$.tab') = 'Daily prios' and json_extract(raw_json,'$.status') in ('Pending','WIP','Review','Blocked')`;
-const READING = `json_extract(raw_json,'$.tab') = 'Readings' and coalesce(json_extract(raw_json,'$.status'), '') != 'Done'`;
+// Every sync is a full snapshot written in one batch, so rows renamed or deleted in the sheet
+// are the ones whose ingested_at is older than the latest snapshot: ignore them.
+const LATEST = `ingested_at = (select max(ingested_at) from items where source = 'sheets')`;
+const OPEN = `${LATEST} and json_extract(raw_json,'$.tab') = 'Daily prios' and json_extract(raw_json,'$.status') in ('Pending','WIP','Review','Blocked')`;
+const READING = `${LATEST} and json_extract(raw_json,'$.tab') = 'Readings' and coalesce(json_extract(raw_json,'$.status'), '') != 'Done'`;
+
+// Pending panel: everything in motion, plus not-started tasks that are overdue or due within 3 days.
+const soon = () => new Date(Date.now() + 3 * 86_400_000).toISOString().slice(0, 10);
+const NEEDS_ME = () => `${OPEN} and (json_extract(raw_json,'$.status') != 'Pending' or json_extract(raw_json,'$.deadline') <= '${soon()}')`;
 
 export const sheetsView: SourceView = {
   source: "sheets",
@@ -18,7 +25,7 @@ export const sheetsView: SourceView = {
   }),
   pending: () =>
     rows("sheets", {
-      where: OPEN,
+      where: NEEDS_ME(),
       limit: 50,
       extra: "json_extract(raw_json,'$.status') status, json_extract(raw_json,'$.deadline') deadline",
       // WIP first, then by deadline
