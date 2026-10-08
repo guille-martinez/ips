@@ -11,6 +11,7 @@
     "db:migrate": "tsx scripts/migrate.ts",
     "seed": "tsx scripts/seed.ts",
     "sync": "tsx worker/index.ts --once",
+    "sync:only": "tsx scripts/sync-only.ts",
     "worker": "tsx worker/index.ts",
     "auth:check": "tsx scripts/auth-check.ts",
     "auth:google": "tsx scripts/auth-google.ts",
